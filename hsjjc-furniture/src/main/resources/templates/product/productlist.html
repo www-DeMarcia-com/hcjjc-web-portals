@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy" ></div>
+<body>
+ <div th:replace="header::copy" ></div>
+ <div th:replace="homepic::copy" ></div>
+ <!-- <img th:src="@{/images/photo01.gif}"/> -->
+<section class="pro-list">
+    <aside class="pro-leftsidebar">
+        <ul>
+            <li>
+                <a href="javascript:void(0);" onclick="showall()">---产品分类---</a>
+                <ul id="pro-category">
+                <li th:each="kinds:${commoditykinds}" th:id="'commoditykinds'+${kinds.id}" ><input th:value="${kinds.name}" th:id="'comkinds'+${kinds.id}" type="hidden"/><a href="javascript:void(0);" th:text="${kinds.name}" th:onclick="'queryforkinds('+${kinds.id}+')'"></a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <aside class="pro-rightsidebar" >
+        <header> <p></p>
+             <span id="kindsname" style="display: none;"></span> 
+             <span  id="productsearch">产品搜索 &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="prosearch" placeholder="请输入关键字" id="prosearch" onkeydown="keydown()"/> &nbsp;&nbsp;<span id="prosearchpic" onclick="prosearch()"></span> </span>
+        </header>
+        <ul id="product">
+        </ul>
+        <ul id="product2" style="display: none;">
+        </ul>
+         <ul id="product3" style="display: none;">
+        </ul>
+        
+         <script type="text/javascript">
+    $(function () {
+        $("#demo1").jqPaginator({
+            totalPages: [[${totlepage}]],
+            visiblePages: [[${totlepage>6?6:totlepage}]],
+            currentPage: [[${page}]],
+            first: '<li class="first"><a href="javascript:void(0);">首    页<\/a><\/li>',
+            prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
+            next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
+            last: '<li class="last"><a href="javascript:void(0);">尾    页<\/a><\/li>',
+            page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+            onPageChange: function (n) {
+                /* $("#demo1-text").html("当前第" + n + "页"); */
+                var nginxport="[[${nginxport}]]";
+                var nginxurl="[[${nginxurl}]]";
+            	$.ajax({
+                    type: "post",
+                    url: "/ajax/productlist",    //向springboot请求数据的url
+                    data: {"page":n},
+                    success: function (data) {
+                    	if(data!=null){
+                    		var str="";
+                    		$("#product").html("");
+                    		for(var i=0;i<data.length;i++){
+                    			var tt="";
+                    			if(data[i].pictureurl==null){
+                    				tt="<img src='/images/photo01.gif'/>";
+                    			}else{
+                    				tt="<img src='http://"+nginxurl+":"+nginxport+"/"+data[i].pictureurl.replace(".","_210x133.")+"'/>";
+                    			}
+                    			str=str+"<li>"+
+                                "<a href='javascript:void(0)' onclick='querydetail("+data[i].id+")'>"+
+                               " <div class='img-box'>"+
+                                   tt+
+                                   "<p>"+data[i].name+"</p>"+
+                                "</div>"+
+                                "</a>"+
+                            "</li>";
+                    		}
+                    		$("#product").html(str);
+                    	}    
+                    }
+                });
+            }
+        });
+	}) 
+	
+	function queryforkinds(kindsid){
+    	$("#pro-category li").attr("class",""); 
+    	$("#commoditykinds"+kindsid).attr("class","on");   	
+    	$("#kindsname").html(""); 
+    	$("#kindsname").attr("style","");
+    	var t=$("#comkinds"+kindsid).val();
+    	$("#kindsname").html(t);
+    	$.ajax({
+    		type: "post",
+            url: "/ajax/querycommoditybykindsid",    //向springboot请求数据的url
+            data: {"page":1,"kindsid":kindsid},
+            success: function (data) {
+            	if(data!=null){
+            		var list=data.list;
+            		var totlepage=data.bg;
+            		var visiblePages=totlepage>6?6:totlepage;
+            		var page=data.page;
+            		$("#demo1").attr("style","display:none");
+            		$("#demo3").attr("style","display:none");
+            		$("#demo2").attr("style","");
+            		$("#product").attr("style","display:none");
+            		//$("#detail").attr("style","display:none");
+            		/* $("#product").html(""); */
+            		$("#product2").attr("style","");
+            		$("#product3").attr("style","display:none");
+            		$("#demo2").jqPaginator({
+                        totalPages: totlepage,
+                        visiblePages: visiblePages,
+                        currentPage: page,
+                        first: '<li class="first"><a href="javascript:void(0);">首    页<\/a><\/li>',
+                        prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
+                        next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
+                        last: '<li class="last"><a href="javascript:void(0);">尾    页<\/a><\/li>',
+                        page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+                        onPageChange: function (n) {
+                            /* $("#demo1-text").html("当前第" + n + "页"); */
+                            var nginxport="[[${nginxport}]]";
+                            var nginxurl="[[${nginxurl}]]";
+                        	$.ajax({
+                                type: "post",
+                                url: "/ajax/querycommoditybykindsid",    //向springboot请求数据的url
+                                data: {"page":n,"kindsid":kindsid},
+                                success: function (data) {
+                                	if(data!=null){
+                                		var str="";
+                                		$("#product2").html("");
+                                		data=data.list;
+                                		for(var i=0;i<data.length;i++){
+                                			var tt="";
+                                			if(data[i].pictureurl==null){
+                                				tt="<img src='/images/photo01.gif'/>";
+                                			}else{
+                                				tt="<img src='http://"+nginxurl+":"+nginxport+"/"+data[i].pictureurl.replace(".","_210x133.")+"'/>";
+                                			}
+                                			str=str+"<li>"+
+                                            "<a href='javascript:void(0)' onclick='querydetail("+data[i].id+")'>"+
+                                           " <div class='img-box'>"+
+                                               tt+
+                                               "<p>"+data[i].name+"</p>"+
+                                            "</div>"+
+                                            "</a>"+
+                                        "</li>";
+                                		}
+                                		$("#product2").html(str);
+                                	}    
+                                }
+                            });
+                        }
+                    });
+            	}else{
+            		
+            	}
+            }
+    	});
+    }
+    function prosearch(){
+    	var keys=$("#prosearch").val().trim();
+    	if(keys!=''){
+    		$.ajax({
+    			 type: "post",
+                 url: "/ajax/queryproductfk",    //向springboot请求数据的url
+                 data: {"page":1,"keywords":keys},
+                 success: function (data) {
+                		$("#demo1").attr("style","display:none");
+                		$("#demo2").attr("style","display:none");
+                		$("#demo3").attr("style","");
+                		$("#product").attr("style","display:none");
+                		$("#product2").attr("style","display:none");
+                		$("#product3").attr("style","");
+                 	if(data!=null&&data.list!=null&&data.list.length>0){
+                		var list=data.list;
+                		var totlepage=data.bg;
+                		var visiblePages=totlepage>6?6:totlepage;
+                		var page=data.page;
+                	
+                		$("#demo3").jqPaginator({
+                            totalPages: totlepage,
+                            visiblePages: visiblePages,
+                            currentPage: page,
+                            first: '<li class="first"><a href="javascript:void(0);">首    页<\/a><\/li>',
+                            prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
+                            next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
+                            last: '<li class="last"><a href="javascript:void(0);">尾    页<\/a><\/li>',
+                            page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+                            onPageChange: function (n) {
+                                var nginxport="[[${nginxport}]]";
+                                var nginxurl="[[${nginxurl}]]";
+                            	$.ajax({
+                                    type: "post",
+                                    url: "/ajax/queryproductfk",    //向springboot请求数据的url
+                                    data: {"page":n,"keywords":keys},
+                                    success: function (data) {
+                                    	if(data!=null){
+                                    		var str="";
+                                    		$("#product3").html("");
+                                    		data=data.list;
+                                    		for(var i=0;i<data.length;i++){
+                                    			var tt="";
+                                    			if(data[i].pictureurl==null){
+                                    				tt="<img src='/images/photo01.gif'/>";
+                                    			}else{
+                                    				tt="<img src='http://"+nginxurl+":"+nginxport+"/"+data[i].pictureurl.replace(".","_210x133.")+"'/>";
+                                    			}
+                                    			str=str+"<li>"+
+                                                "<a href='javascript:void(0)' onclick='querydetail("+data[i].id+")'>"+
+                                               " <div class='img-box'>"+
+                                                   tt+
+                                                   "<p>"+data[i].name+"</p>"+
+                                                "</div>"+
+                                                "</a>"+
+                                            "</li>";
+                                    		}
+                                    		$("#product3").html(str);
+                                    	}    
+                                    }
+                                });
+                            }
+                        });
+                	}else{
+                		$("#product3").html("没有要查询的商品信息");
+                		$("#product3").attr("style","text-align:center;margin-top:120px;color:#808080; font-size :70px;");
+                	}
+                }
+    		})
+    	}
+    }
+    function keydown(){
+    	if (event.keyCode == 13){
+    	    event.returnValue=false;
+    	    event.cancel = true;
+    	    prosearch();
+    	  }
+    }
+    function showall(){
+    	$("#demo2").attr("style","display:none");
+    	$("#demo3").attr("style","display:none");
+		$("#demo1").attr("style","");
+		$("#product2").attr("style","display:none");
+		$("#product3").attr("style","display:none");
+		/* $("#product2").html(""); */
+		$("#product").attr("style","");
+		$("#kindsname").attr("style","display:none");
+		$("#pro-category li").attr("class","");
+		//$("#detail").attr("style","display:none");
+    }
+   function querydetail(productid){
+	   window.location="/product/productdetails?productid="+productid;
+   }
+    </script>
+    </aside>
+  <div class="article_list_more_pages" >
+        <ul class="pagination" id="demo1" style="display: inline-block;margin-left: 80px;">
+        </ul>
+        <ul class="pagination" id="demo2" style="display:none;margin-left: 80px;" >
+        </ul>
+        <ul class="pagination" id="demo3" style="display:none;margin-left: 80px;" >
+        </ul>
+    </div>
+</section>
+
+﻿<div th:replace="footer::copy" ></div>
+</body>
+</html>

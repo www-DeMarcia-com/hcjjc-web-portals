@@ -1,0 +1,51 @@
+<head th:fragment="copy">
+    <title th:text="${company.name}"></title>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="format-detection" content="telephone=no"/>
+<meta name="renderer" content="webkit"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<link rel="stylesheet" th:href="@{/css/default.min.css?t=5}" />
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script type="text/javascript" th:src="@{/lib/jquery/jquery.min.js}"></script>
+<!--<![endif]-->
+<!--[if lte IE 8 ]>
+<script th:src="@{/lib/jquery/1.11.3/jquery.min.js}"></script>
+<script th:src="@{/lib//amazeui/2.8.3/modernizr.js}"></script>
+<script th:src="@{/lib/amazeui/amazeui.ie8polyfill.min.js}"></script>
+<![endif]-->
+<script type="text/javascript" th:src="@{/lib/handlebars/handlebars.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/iscroll/iscroll-probe.js}"></script>
+<script type="text/javascript" th:src="@{/lib/amazeui/amazeui.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/raty/jquery.raty.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.min.js?t=3}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.imagezoom.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/jquery/jqPaginator.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/boostrap/boostrap.mini.css}" />
+<script type="text/javascript">
+var zeroize = function (value, length) {
+    if (!length) length = 2;
+    value = String(value);
+    for (var i = 0, zeros = ''; i < (length - value.length); i++) {
+        zeros += '0';
+    }
+    return zeros + value;
+};
+function search(){
+	var key=$("#search").val().trim();
+	if(key!=""){
+		window.location="/articlelistfk?key="+key+"&page=0";
+	}
+}
+function infosearch(){
+	if (event.keyCode == 13){
+	    event.returnValue=false;
+	    event.cancel = true;
+	    search();
+	  }
+}
+</script>
+</head>

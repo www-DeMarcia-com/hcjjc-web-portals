@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">编号：</label>
+								<div class="col-sm-8">
+									<input id="id" name="id" th:value="${kinds.id}"
+										class="form-control" type="hidden">  
+										<span th:text="${kinds.id}"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">标题：</label>
+								<div class="col-sm-8">
+									<input id="title" name="title" th:value="${kinds.title}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">新闻类型：</label>
+								<div class="col-sm-8">
+										<select name="infonewskindsid" id="infonewskindsid" class="form-control">
+											<option th:value="${info.id}" th:each="info:${infokinds}" th:selected="${#strings.contains(kinds.infonewskindsid,info.id)}" th:text="${info.name}" ></option>
+										</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<input id="content" name="content" type="hidden" th:value="${kinds.content}"> 
+								<input id="contentgg" name="contentgg" type="hidden" th:value="${kinds.contentgg}">
+								<label class="col-sm-2 control-label">内容：</label>
+								<div class="col-sm-10">
+									<div class="ibox-content no-padding">
+										<div id="content_sn" class="summernote"></div>
+									</div>	
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">关键字：</label>
+								<div class="col-sm-8">
+									<input id="tags" name="tags" th:value="${kinds.tags}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-6">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/web/infonews/edit.js">
+	</script>
+</body>
+</html>

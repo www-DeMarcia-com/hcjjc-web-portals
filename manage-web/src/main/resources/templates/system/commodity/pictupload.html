@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header">
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">编号：</label>
+								<div class="col-sm-9">
+									 <input class="form-control" type="text" th:value="${kinds.id}" readonly="readonly" id="cid">
+									 <!-- <input class="form-control" id ="cId" type="hidden" th:value="${kinds.id}" /> -->
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商品名称：</label>
+								<div class="col-sm-9">
+									 <input class="form-control" type="text" th:value="${kinds.name}" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">首页图片：</label>
+								<div class="tz-gallery">
+							        <div class="row" th:if="${pict!=null}">
+							            <div class="col-sm-6 col-md-4" th:each="pic,picstart:${pict}" th:if="${pic.rank==1}" style="float: none;">
+							                <a class="lightbox" href="javascript:void(0)" th:if="${pic.rank==1}">
+							                    <img th:src="${nginx}+${pic.url}"/>
+							                </a>
+							               <div style="text-align: center;" th:if="${pic.rank==1}">
+								               <a class="btn btn-primary btn-sm" href="javascript:void(0);" mce_href="javascript:void(0);" 
+								               title="排序" 
+								                th:text="${pic.rank}"> 
+								               <!-- <i class="fa fa-edit"></i> -->
+								               </a> 
+								                 <a class="btn btn-warning btn-sm" href="javascript:void(0);" mce_href="javascript:void(0);" 
+								               title="删除" 
+								               th:onclick="'removepic('+${pic.id}+')'"><i class="fa fa-remove"
+								               ></i></a> 
+							               </div>
+							              </div>
+							              <div>
+							               <input id="fileupload" type="file" name="files[]" multiple="multiple" class="file"/>
+							               </div>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">其余图片：</label>
+								<div class="tz-gallery">
+							        <div class="row" th:if="${pict!=null}">
+							            <div class="col-sm-6 col-md-4" th:each="pic,picstart:${pict}">
+							                <a class="lightbox" href="javascript:void(0)" th:if="${pic.rank!=1}">
+							                    <img th:src="${nginx}+${pic.url}" th:alt="${pic.rank-1}" th:title="${pic.rank-1}"/>
+							                </a>
+							               <div style="text-align: center;" th:if="${pic.rank!=1}">
+								               <a class="btn btn-primary btn-sm" href="javascript:void(0);" mce_href="javascript:void(0);" 
+								               title="排序" 
+								              th:text="${pic.rank}"><!-- <i class="fa fa-edit"></i> -->
+								               
+								               </a> 
+								               <a class="btn btn-warning btn-sm" href="javascript:void(0);" mce_href="javascript:void(0);" 
+								               title="删除" 
+								               th:onclick="'removepic('+${pic.id}+')'"><i class="fa fa-remove"
+								               ></i></a> 
+							               </div>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">上传：</label>
+								<div class="col-sm-9">
+									<div id="demo"></div>
+									<span style="color: red;">如果首页图片没有，则上传第一张图片为首页图片!</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-6">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/web/commodity/upload.js"></script>
+	<link rel="stylesheet" href="/css/zyUpload.css" type="text/css">
+	<!-- 引用核心层插件 -->
+	<script src="/js/zyFile.js"></script>
+	<!-- 引用控制层插件 -->
+	 <script src="/js/zyUpload.js"></script>
+	<!-- 引用初始化JS -->
+	<script src="/js/lanrenzhijia.js"></script> 
+	
+<script src="/js/jquery.ui.widget.js"></script>
+<script src="/js/jquery.iframe-transport.js"></script>
+<script src="/js/jquery.fileupload.js"></script>
+<!-- <script src="/bootstrap/js/bootstrap.min.js"></script> -->
+<!-- <link href="/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" /> -->
+<!-- we code these -->
+<link href="/css/dropzone.css" type="text/css" rel="stylesheet" />
+<!-- <script src="/js/myuploadfunction.js"></script> -->
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<footer th:fragment="copy">
+    <div>
+        <div class="footer-info">
+            <div class="footer-content" style="text-align: center;">
+                <!-- <img th:src="@{images/qccode.png}" alt=""/> -->
+               <div style="margin-left: 0px;float: none;display: inline-block;">
+                <!-- <p>招商热线:0714-8868331</p> -->
+                <div class="footer-box">
+                    <i class="icon-tel"></i>
+                    <span>公司电话:</span>
+                    <span th:text="${company.cellphone}+'|'+${company.phone}"></span>
+                </div>
+                <div class="footer-box">
+                    <i class="icon-email"></i>
+                    <span>公司邮箱:</span>
+                    <span th:text="${company.email}"></span>
+                </div>
+                <div class="footer-box">
+                    <i class="icon-address"></i>
+                    <span>公司地址:</span>
+                    <span th:text="${company.address}"></span>
+                </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</footer>

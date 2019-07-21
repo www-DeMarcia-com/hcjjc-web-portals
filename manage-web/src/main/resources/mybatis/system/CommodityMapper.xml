@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.system.dao.CommodityDao">
+
+	<select id="get" resultType="com.bootdo.system.domain.CommodityDO">
+		select * from commodity
+		where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.system.domain.CommodityDO">
+		select * from commodity
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="comefrom != null and comefrom != ''"> and comefrom = #{comefrom} </if>
+			<if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+			<if test="intro != null and intro != ''"> and intro = #{intro} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="price != null and price != ''"> and price = #{price} </if>
+			<if test="promotionprice != null and promotionprice != ''"> and promotionprice = #{promotionprice} </if>
+			<if test="quantity != null and quantity != ''"> and quantity = #{quantity} </if>
+			<if test="commoditykindsid != null and commoditykindsid != ''"> and commoditykindsid = #{commoditykindsid} </if>
+			<if test="producerid != null and producerid != ''"> and producerid = #{producerid} </if>
+			<if test="ispromotion != null and ispromotion != ''"> and ispromotion = #{ispromotion} </if>
+			<if test="ishot != null and ishot != ''"> and ishot = #{ishot} </if>
+			<if test="pictureurl != null and pictureurl != ''"> and pictureurl = #{pictureurl} </if>
+			<if test="starttime != null and starttime != ''"> and starttime = #{starttime} </if>
+			<if test="endtime != null and endtime != ''"> and endtime = #{endtime} </if>
+			<if test="isclose != null and isclose != ''"> and isclose = #{isclose} </if>
+			<if test="specname != null and specname != ''"> and specname = #{specname} </if>
+			<if test="specvalue != null and specvalue != ''"> and specvalue = #{specvalue} </if>
+		</where>
+			<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by createtime desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from commodity
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="time != null and time != ''"> and time = #{time} </if>
+			<if test="title != null and title != ''"> and title = #{title} </if>
+			<if test="infonewskindsid != null and infonewskindsid != ''"> and infonewskindsid = #{infonewskindsid} </if>
+			<if test="contentgg != null and contentgg != ''"> and contentgg = #{contentgg} </if>
+			<if test="content != null and content != ''"> and content = #{content} </if>
+			<if test="tags != null and tags != ''"> and tags = #{tags} </if>
+			<!-- <if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
+			<if test="delFlag != null and delFlag != ''"> and del_flag = #{delFlag} </if> -->
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.bootdo.system.domain.CommodityDO"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into commodity
+		(
+		`id`,
+		`comefrom`,
+		`createtime`,
+		`intro`,
+		`name`,
+		`price`,
+		`promotionprice`,
+		`quantity`,
+		`commoditykindsid`,
+		`producerid`,
+		`ispromotion`,
+		`ishot`,
+		`starttime`,
+		`endtime`,
+		`isclose`,
+		`specname`,
+		`specvalue`
+		)
+		values
+		(
+		#{id},
+		#{comefrom},
+		sysdate(),
+		#{intro},
+		#{name},
+		#{price},
+		#{promotionprice},
+		#{quantity},
+		#{commoditykindsid},
+		#{producerid},
+		#{ispromotion},
+		#{ishot},
+		#{starttime},
+		#{endtime},
+		#{isclose},
+		#{specname},
+		#{specvalue}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bootdo.system.domain.CommodityDO">
+		update commodity
+		<set>
+			<if test="id != null and id != ''"> id = #{id}, </if>
+			<if test="comefrom != null and comefrom != ''"> comefrom = #{comefrom}, </if>
+			<if test="createtime != null and createtime != ''"> createtime = #{createtime}, </if>
+			<if test="intro != null and intro != ''"> intro = #{intro}, </if>
+			<if test="name != null and name != ''"> name = #{name}, </if>
+			<if test="price != null and price != ''"> price = #{price}, </if>
+			<if test="promotionprice != null and promotionprice != ''"> promotionprice = #{promotionprice}, </if>
+			<if test="quantity != null and quantity != ''"> quantity = #{quantity}, </if>
+			<if test="commoditykindsid != null and commoditykindsid != ''"> commoditykindsid = #{commoditykindsid}, </if>
+			<if test="producerid != null"> producerid = #{producerid}, </if>
+			<if test="ispromotion != null"> ispromotion = #{ispromotion}, </if>
+			<if test="ishot != null"> ishot = #{ishot}, </if>
+			<if test="pictureurl != null and pictureurl != ''"> pictureurl = #{pictureurl}, </if>
+			<if test="starttime != null">
+			 	 starttime =#{starttime}, 
+			 </if>
+			<if test="endtime != null"> 
+				 endtime= #{endtime},
+			 </if>
+			<if test="isclose != null"> isclose = #{isclose}, </if>
+			<if test="specname != null and specname != ''"> specname = #{specname}, </if>
+			<if test="specvalue != null and specvalue != ''"> specvalue = #{specvalue} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from commodity where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from commodity where id in
+		<foreach item="ids" collection="array" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	
+
+</mapper>

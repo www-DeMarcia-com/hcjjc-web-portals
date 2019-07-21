@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.system.dao.InfonewsDao">
+
+	<select id="get" resultType="com.bootdo.system.domain.InfoNewsDO">
+		select * from infonews
+		where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.system.domain.InfoNewsDO">
+		select * from infonews
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="time != null and time != ''"> and time = #{time} </if>
+			<if test="title != null and title != ''"> and title like concat('%',#{title},'%') </if>
+			<if test="infonewskindsid != null and infonewskindsid != ''"> and infonewskindsid = #{infonewskindsid} </if>
+			<if test="contentgg != null and contentgg != ''"> and contentgg = #{contentgg} </if>
+			<if test="content != null and content != ''"> and content like concat('%',#{content},'%') </if>
+			<if test="tags != null and tags != ''"> and tags = #{tags} </if>
+		</where>
+			order by time desc
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from infonews
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="time != null and time != ''"> and time = #{time} </if>
+			<if test="title != null and title != ''"> and title = #{title} </if>
+			<if test="infonewskindsid != null and infonewskindsid != ''"> and infonewskindsid = #{infonewskindsid} </if>
+			<if test="contentgg != null and contentgg != ''"> and contentgg = #{contentgg} </if>
+			<if test="content != null and content != ''"> and content = #{content} </if>
+			<if test="tags != null and tags != ''"> and tags = #{tags} </if>
+			<!-- <if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
+			<if test="delFlag != null and delFlag != ''"> and del_flag = #{delFlag} </if> -->
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.bootdo.system.domain.InfoNewsDO"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into infonews
+		(
+		`id`,
+		`time`,
+		`title`,
+		`infonewskindsid`,
+		`contentgg`,
+		`content`,
+		`tags`
+		)
+		values
+		(
+		#{id},
+		sysdate(),
+		#{title},
+		#{infonewskindsid},
+		#{contentgg},
+		#{content},
+		#{tags}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bootdo.system.domain.InfoNewsDO">
+		update infonews
+		<set>
+			<if test="id != null and id != ''"> id = #{id}, </if>
+			<if test="time != null and time != ''"> time = #{time}, </if>
+			<if test="title != null and title != ''"> title = #{title}, </if>
+			<if test="infonewskindsid != null and infonewskindsid != ''"> infonewskindsid = #{infonewskindsid}, </if>
+			<if test="contentgg != null and contentgg != ''"> contentgg = #{contentgg}, </if>
+			<if test="content != null and content != ''"> content = #{content}, </if>
+			<if test="tags != null and tags != ''"> tags = #{tags} </if>
+			
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from infonews where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from infonews where id in
+		<foreach item="ids" collection="array" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	
+	<!-- <select id="listParentDept" resultType="long">
+		select DISTINCT parent_id from sys_dept
+	</select> -->
+
+	
+
+</mapper>

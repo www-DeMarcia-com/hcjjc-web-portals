@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy" ></div>
+<body>
+<div th:replace="header::copy" ></div>
+<div th:replace="homepic::copy" ></div>
+<section class="index-section">
+    <div>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="index-content">
+        <section class="index-content-section-first"><div><img th:src="@{images/sectionbanner.png}" alt=""/></div> </section>
+        <section class="index-content-section-second">
+            <div>
+                <div class="index-auto">
+            <article>公司介绍</article>
+            <!-- <h6>COMPANY INTRODUCTION</h6> -->
+            <main th:utext="${company.introgg}"></main>
+             <a class="index-button" th:href="@{/aboutus}">查看详情</a>
+            </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<section class="index-product"><!--商品系列  -->
+    <main>
+        <ul>
+            <li th:each="kinds:${commoditykinds}"><a th:href="@{'/product/indexlist?kindsid='+${kinds.id}}"><span th:text="${kinds.name}" style="color: white;"></span></a></li>
+        </ul>
+    </main>
+    <main></main>
+    <main></main>
+</section>
+<section class="index-margin-bottom">
+    <div class="index-morecase">
+        <span></span>
+        <a th:href="@{/product/productlist}">MORE &#62; &#62;</a>
+    </div>
+    <div class="index-content" id="indexcommodity">
+         <div class="product-list">
+            <div class="am-u-sm-6 am-u-md-6 am-u-lg-4" th:each="comms:${commoditys}">
+                <a th:href="@{'/product/productdetails?productid='+${comms.id}}" th:if="${comms.pictureurl!=null}">
+                    <img th:src="'http://'+${nginxIp}+':'+${nginxPort}+'/'+${comms.pictureurl}" />
+                </a>
+                <a th:href="@{'/product/productdetails?productid='+${comms.id}}" th:if="${comms.pictureurl==null}">
+                    <img th:src="@{/images/photo01.gif}" />
+                </a>
+           </div> 
+        </div>
+    </div>
+</section>
+
+<section class="index-margin-bottom">
+    <div class="index-morecase">
+        <span></span>
+        <a th:href="@{/newslistmore?page=0}">MORE &#62; &#62;</a>
+    </div>
+    <div class="index-content">
+        <div class="new-index">
+            <ul>
+                <li th:each="infonews:${news}"><a th:href="@{'/articlecontent?article='+${infonews.id}}"><h3 th:text="${infonews.title}"></h3>
+                    <article th:text="${infonews.contentgg}"></article>
+                </a></li>                 
+            </ul>
+        </div>
+    </div>
+</section>
+	<div th:replace="footer::copy" ></div>
+
+</body>
+</html>

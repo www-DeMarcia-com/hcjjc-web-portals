@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy" ></div>
+<body>
+ <div th:replace="header::copy" ></div>
+ <div th:replace="homepic::copy" ></div>
+<div>
+    <header class="article_list_more_header">
+     <div> <a th:href="@{/index}">首页</a>&#62;<a th:href="@{/articlelist}">新闻资讯</a>&#62;<a>更多</a></div>
+    </header>
+    <section class="article-content">
+        <ul id="more1">
+            
+        </ul>
+    </section>
+    <script type="text/javascript">
+    $(function () {
+        $("#demo1").jqPaginator({
+            totalPages: [[${totlepage}]],
+            visiblePages: [[${totlepage>6?6:totlepage}]],
+            currentPage: [[${page}]],
+            first: '<li class="first"><a href="javascript:void(0);">首    页<\/a><\/li>',
+            prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
+            next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
+            last: '<li class="last"><a href="javascript:void(0);">尾    页<\/a><\/li>',
+            page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+            onPageChange: function (n) {
+                /* $("#demo1-text").html("当前第" + n + "页"); */
+            	$.ajax({
+                    type: "post",
+                    url: "/ajax/newspage",    //向springboot请求数据的url
+                    data: {"page":n},
+                    success: function (data) {
+                    	if(data!=null){
+                    		$("#more1").html("");
+                    		var str="";
+                    		var myDate = new Date();
+                    		for(var i=0;i<data.length;i++){    
+                    			var date=new Date(data[i].time);
+                    			var title=data[i].title==null?"":data[i].title;
+                    			var content=data[i].contentgg;
+                            	str=str+"<li>"+
+                            	"<div class='article-date'>"+
+                            	"<strong>"+zeroize(date.getDate())+"</strong>"+
+                            	"<p>"+date.getFullYear()+"-"+zeroize(date.getMonth() + 1)+"</p>"+
+                            	"</div>"+
+                            	" <div class='article-info'>"+
+                            	"<a href=\"/articlecontent?article="+data[i].id+"\">"+
+                            	 	"<h3>"+title+"</h3>"+
+                            	 	"<p>"+content+"</p>"+
+                            	 	"</a>"+
+                            	 	"</div>"+
+                            	 	"</li>"; 	
+                    		}
+                    		$("#more1").html(str);
+                    	}    
+                    }
+                });
+            }
+        });
+	})    
+    </script>
+    <div class="article_list_more_pages" >
+        <ul class="pagination" id="demo1" style="display: inline-block;margin-left: 80px;">
+        </ul>
+    </div>
+</div>
+﻿<div th:replace="footer::copy" ></div>
+</body>
+</html>

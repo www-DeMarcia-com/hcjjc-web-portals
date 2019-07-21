@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy" ></div>
+<body>
+ <div th:replace="header::copy" ></div>
+ <div th:replace="homepic::copy" ></div>
+<div>
+    <header class="header-article-list">
+        <div class="article-position"><a th:href="@{/articlelist}">新闻资讯</a></div>
+        <ul>
+            <li th:each="kinds:${infonewskinds}">
+            	<a th:text="${kinds.name}" th:onclick="'querykinds('+${kinds.id}+')'" href="javascript:void(0)"></a>
+            </li>
+        </ul>
+        <div class="article-more-btn">
+            <a th:href="@{/newslistmore?page=0}">MORE &#62; &#62;</a>
+        </div>
+    </header>
+
+    <section class="article-content">
+        <ul id="more1">
+            <li th:each="news:${newsmore}">
+                <div class="article-date">
+                    <strong th:text="${#dates.format(news.time,'dd')}"></strong>
+                    <p th:text="${#dates.format(news.time,'yyyy-MM')}"></p>
+                </div>
+                <div class="article-info">
+                    <a th:href="@{'/articlecontent?article='+${news.id}}">
+                    	
+                        <h3 th:text="${news.title==null?'':news.title}"></h3>
+                        <p th:text="${news.contentgg==null?'':news.contentgg}"></p>
+                        
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </section>
+   	<div class="article_list_more_pages" style="display: none" id="ppp">
+        <ul class="pagination" id="demo1" style="display: inline-block;margin-left: 80px;">
+        </ul>
+    </div> 
+</div>
+	<div th:replace="footer::copy" ></div>
+</body>
+<script type="text/javascript">
+	function querykinds(kindsid){
+		$.ajax({
+            type: "post",
+            url: "/ajax/querynewsbykindsId",    //向springboot请求数据的url
+            data: {"page":0,"kindsid":kindsid},
+            success: function (data) {
+            	if(data!=null){
+            		$("#more1").html("");
+            		var news=data.kindlist;
+            		var totalPages=data.bg;
+            		var page=data.page;
+            		var str="";
+            		for(var i=0;i<news.length;i++){
+            			var date=new Date(news[i].time);
+            			str=str+"<li>"+
+                    	"<div class='article-date'>"+
+                    	"<strong>"+zeroize(date.getDate())+"</strong>"+
+                    	"<p>"+date.getFullYear()+"-"+zeroize(date.getMonth() + 1)+"</p>"+
+                    	"</div>"+
+                    	" <div class='article-info'>"+
+                    	"<a href='article_list_content.html'>"+
+                    	 	"<h3>"+news[i].title+"</h3>"+
+                    	 	"<p>"+news[i].contentgg+"</p>"+
+                    	 	"</a>"+
+                    	 	"</div>"+
+                    	 	"</li>";
+            			
+            		}
+            		$("#more1").html(str);
+            	}
+            }
+        });
+		
+	}
+</script>
+</html>

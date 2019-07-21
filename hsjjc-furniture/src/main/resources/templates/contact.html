@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy" ></div>
+<body>
+<div th:replace="header::copy" ></div>
+<div th:replace="homepic::copy" ></div>
+<div>
+    <header class="header-article-list">
+        <div class="contact-left">联系我们</div>
+        <div class="contact-right">
+            <a href="index.html">首页 </a>&#62;<a href="#">联系我们</a>
+        </div>
+    </header>
+
+    <main class="contact">
+        <iframe th:src="@{/map}" width="636" height="378" frameborder="0" scrolling="no"></iframe>
+        <ul>
+            <li>
+                <span><img src="images/contact1.png"/></span>
+                <h2>联系我们</h2>
+                <p>电话:[[${company.cellphone}]] &nbsp;|&nbsp;[[${company.phone}]]  </p>
+            </li>
+            <li>
+                <span><img src="images/contact2.png"/></span>
+                <h2>公司地址</h2>
+                <p>[[${company.address}]]</p>
+            </li>
+            <li>
+                <span><img src="images/contact3.png"/></span>
+                <h2>电子邮箱</h2>
+                <p>[[${company.email}]]</p>
+            </li>
+        </ul>
+    </main>
+</div>
+﻿	<div th:replace="footer::copy" ></div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy"></div>
+<body>
+	<div th:replace="header::copy"></div>
+	<div th:replace="homepic::copy"></div>
+	<div>
+		<header class="header-article-list">
+			<div class="article-position">
+				<a href="article_list_content.html"> <span
+					th:if="${articleup!=null}"> <a
+						th:href="@{'/articlecontent?article='+${articleup.id}}">上一篇</a>
+				</span> <span th:if="${articleup==null}"> <a>上一篇</a>
+				</span> <span th:text="${articleup==null?'没有了':articleup.title}"></span>
+
+				</a>
+			</div>
+			<ul>
+				<li th:each="kinds:${infonewskinds}"><a th:text="${kinds.name}"
+					th:href="@{/articlelist}"></a></li>
+			</ul>
+			<div class="article-more-btn">
+				<a href="article_list_content.html"> <span
+					th:if="${articledown!=null}"> <a
+						th:href="@{'/articlecontent?article='+${articledown.id}}">下一篇</a>
+				</span> <span th:if="${articledown==null}"> <a>下一篇</a>
+				</span> <span th:text="${articledown==null?'没有了':articledown.title}"></span>
+
+				</a>
+			</div>
+		</header>
+
+		<section class="article-content">
+			<h1 th:text="${article.title}" style="text-align: center;margin: 40px 0;"></h1>
+			<main th:utext="${article.content}"> </main>
+		</section>
+	</div>
+	<div th:replace="footer::copy"></div>
+</body>
+</html>

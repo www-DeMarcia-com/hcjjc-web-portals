@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy" ></div>
+<body>
+ <div th:replace="header::copy" ></div>
+ <div th:replace="homepic::copy" ></div>
+<section class="pro-list">
+    <aside class="pro-leftsidebar">
+        <ul>
+            <li>
+                <a>产品搜索</a>
+                <ul id="pro-search">
+                    <li><a><input type="text"  class="pro-search"><a class="pro-search-btn">搜索</a></a></li>
+                </ul>
+            </li>
+            <li>
+                <a>产品分类</a>
+                <ul id="pro-category">
+                <li th:each="kinds:${commoditykinds}"><a href="#" th:text="${kinds.name}"></a></li>
+                   <!--  <li class="on"><a href="#">椅子系列</a></li>
+                    <li><a href="#">餐桌系列</a></li>
+                    <li><a href="#">沙发系列</a></li>
+                    <li><a href="#">创意系列</a></li> -->
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <aside class="pro-rightsidebar">
+        <header>
+
+                    <p></p>
+            <span>椅子系列</span>
+        </header>
+        <ul>
+            <li >
+                <a href="productdetails.html">
+                <div class="img-box">
+                    <img th:src="@{/images/pro1.png}"/>
+                    <p>软皮椅</p>
+                </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="productdetails.html">
+                    <div class="img-box">
+                        <img th:src="@{/images/pro1.png}"/>
+                        <p>软皮椅</p>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="productdetails.html">
+                    <div class="img-box">
+                        <img th:src="@{/images/pro1.png}"/>
+                        <p>软皮椅</p>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="productdetails.html">
+                    <div class="img-box">
+                        <img th:src="@{/images/pro1.png}"/>
+                        <p>软皮椅</p>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="productdetails.html">
+                    <div class="img-box">
+                        <img th:src="@{/images/pro1.png}"/>
+                        <p>软皮椅</p>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="productdetails.html">
+                    <div class="img-box">
+                        <img th:src="@{/images/pro1.png}"/>
+                        <p>软皮椅</p>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="productdetails.html">
+                    <div class="img-box">
+                        <img th:src="@{/images/pro1.png}"/>
+                        <p>软皮椅</p>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="productdetails.html">
+                    <div class="img-box">
+                        <img th:src="@{/images/pro1.png}"/>
+                        <p>软皮椅</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <div class="pro_list_more_pages">
+            <ul>
+                <li><a>上一页</a></li>
+                <li class="pro-list-current"><a>1</a></li>
+                <li><a>2</a></li>
+                <li><a>3</a></li>
+                <li><a>下一页</a></li>
+            </ul>
+        </div>
+    </aside>
+
+
+</section>
+﻿<div th:replace="footer::copy" ></div>
+</body>
+</html>

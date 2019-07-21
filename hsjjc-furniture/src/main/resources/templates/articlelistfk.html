@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy" ></div>
+<body>
+ <div th:replace="header::copy" ></div>
+ <div th:replace="homepic::copy" ></div>
+<div>
+    <header class="header-article-list">
+        <div class="article-position"></div>
+        <div class="article-more-btn">
+            <a th:href="@{/newslistmore?page=0}">MORE &#62; &#62;</a>
+        </div>
+    </header> 
+    <section class="article-content">
+        <ul id="more1">
+        	<li style="text-align: center;margin-top: 150px;">
+        		<span style="color:#808080; font-size :70px">没有找到要查询的信息</span>
+        	</li>
+        </ul>
+    </section>
+     <script type="text/javascript">
+    $(function () {
+        $("#demo1").jqPaginator({
+            totalPages: [[${totlepage==null?0:totlepage}]],
+            visiblePages: [[${totlepage==null?1:totlepage>6?6:totlepage}]],
+            currentPage: [[${page==null?1:page}]],
+            first: '<li class="first"><a href="javascript:void(0);">首    页<\/a><\/li>',
+            prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
+            next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
+            last: '<li class="last"><a href="javascript:void(0);">尾    页<\/a><\/li>',
+            page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+            onPageChange: function (n) {
+                /* $("#demo1-text").html("当前第" + n + "页"); */
+                var keyword='[[${key}]]';
+            	$.ajax({
+                    type: "post",
+                    url: "/ajax/newspageforkey",    //向springboot请求数据的url
+                    data: {"page":n,"key":keyword},
+                    success: function (data) {
+                    	var str="";
+                    	if(data!=null){
+                    		$("#more1").html("");
+                    		var myDate = new Date();
+                    		for(var i=0;i<data.length;i++){    
+                    			var date=new Date(data[i].time);
+                            	str=str+"<li>"+
+                            	"<div class='article-date'>"+
+                            	"<strong>"+zeroize(date.getDate())+"</strong>"+
+                            	"<p>"+date.getFullYear()+"-"+zeroize(date.getMonth() + 1)+"</p>"+
+                            	"</div>"+
+                            	" <div class='article-info'>"+
+                            	"<a href=\"/articlecontent?article="+data[i].id+"\">"+
+                            	 	"<h3>"+data[i].title+"</h3>"+
+                            	 	"<p>"+data[i].contentgg+"</p>"+
+                            	 	"</a>"+
+                            	 	"</div>"+
+                            	 	"</li>"; 	
+                    		}
+                    		
+                    	}  
+                    	$("#more1").html(str);
+                    }
+                });
+            }
+        });
+	})    
+    </script>
+    <div class="article_list_more_pages" >
+        <ul class="pagination" id="demo1" style="display: inline-block;margin-left: 80px;">
+        </ul>
+    </div>
+</div>
+	<div th:replace="footer::copy" ></div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>

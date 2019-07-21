@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商品名称：</label>
+								<div class="col-sm-9">
+									 <input id="name" name="name" 
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">数量：</label>
+								<div class="col-sm-4">
+									<input id="quantity" name="quantity" class="form-control" type="text" >
+								</div>
+								<label class="col-sm-2 control-label">价格：</label>
+								<div class="col-sm-4">
+									<input id="price" name="price" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">品牌：</label>
+								<div class="col-sm-4">
+									<select name="producerid" id="producerid" class="form-control">
+											<option value="">--请选择商品品牌--</option>
+											<option th:value="${info1.id}" th:each="info1:${producer}" 
+											 th:text="${info1.name}" ></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">商品系列：</label>
+								<div class="col-sm-4">
+									<select name="commoditykindsid" id="commoditykindsid" class="form-control">
+											<option value="">--请选择商品系列--</option>
+											<option th:value="${info2.id}" th:each="info2:${commkinds}" 
+											 th:text="${info2.name}" ></option>
+										</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">货源：</label>
+								<div class="col-sm-9">
+									 <input id="comefrom" name="comefrom" 
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否下市：</label>
+								<div class="switch onoffswitch col-sm-1">
+								<input id="isclose" name="isclose" value="0" type="hidden"/>
+									<div class="onoffswitch">
+										<input id="isc" name="isc" checked=""
+											type="checkbox" value="1" class="onoffswitch-checkbox"
+											th:checked="false" onclick="close1(this)"> <label
+											class="onoffswitch-label" for="isc"> <span
+											class="onoffswitch-inner"></span> <span
+											class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">是否促销：</label>
+								<div class="switch onoffswitch col-sm-1">
+									<div class="onoffswitch">
+									<input id="ispromotion" name="ispromotion" value="0" type="hidden"/>
+										<input id="isp" name="isp" checked=""
+											type="checkbox" value="1" class="onoffswitch-checkbox"
+											th:checked="false" onclick="promotion(this)"> <label
+											class="onoffswitch-label" for="isp"> <span
+											class="onoffswitch-inner"></span> <span
+											class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">是否热销：</label>
+								<div class="switch onoffswitch col-sm-1">
+								<input id="ishot" name="ishot" value="0" type="hidden"/>
+									<div class="onoffswitch">
+										<input id="ish" name="ish" checked=""
+											type="checkbox" value="1" class="onoffswitch-checkbox" 
+											th:checked=false onclick="hot(this)"> <label
+											class="onoffswitch-label" for="ish"> <span
+											class="onoffswitch-inner"></span> <span
+											class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group" style="display:none;" id="ispro1">
+								<label class="col-sm-2 control-label">促销价：</label>
+								<div class="col-sm-4">
+									 <input id="promotionprice" name="promotionprice" 
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group" style="display:none;" id="ispro2">
+								<label class="col-sm-2 control-label">促销开始时间：</label>
+								<div class="col-sm-4" >
+									 <input id="starttime" name="starttime" 
+										type="text" readonly class="form-control">
+								</div>
+								<label class="col-sm-2 control-label">促销结束时间：</label>
+								<div class="col-sm-4">
+									 <input id="endtime" name="endtime" 
+										class="form-control" type="text" readonly/>
+								</div>
+							</div>
+							<div class="form-group">
+								<input id="intro" name="intro" type="hidden" > 
+								
+								<label class="col-sm-2 control-label">简介：</label>
+								<div class="col-sm-10">
+									<div class="ibox-content no-padding">
+										<div id="content_sn" class="summernote"></div>
+									</div>	
+								</div>
+							</div>
+							<div class="form-group" >
+								<input id="specname" name="specname" type="hidden" />
+								<input id="specvalue" name="specvalue" type="hidden" />
+								<table class="table table-hover" style="width: 88%;margin-left: 12%" id="myTable">
+									<thead>
+								      <tr>
+								         <th>参数</th>
+								         <th>参数名</th>
+								         <th width="15%"></th>
+								      </tr>
+								   </thead>
+								    <tbody>
+								      <tr>
+								          <td><input value="" name="sname"/></td> 
+								          <td><input value="" name="svalue"/></td> 
+								         <td>
+								         <a class="btn btn-primary btn-sm " href="javascript:void(0);"  title="添加" onclick="insertRow1(this)"><i class="fa fa-edit"></i></a> 
+								         <a class="btn btn-warning btn-sm" href="javascript:void(0);" title="删除" onclick="deleteRow1(this)"><i class="fa fa-remove"></i></a>
+								         </td>
+								      </tr>
+								   </tbody>
+								    
+								</table>
+							</div>
+							
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-6">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/web/commodity/add.js">
+	</script>
+</body>
+</html>

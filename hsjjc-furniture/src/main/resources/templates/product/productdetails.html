@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="base::copy" ></div>
+<body>
+<div th:replace="header::copy" ></div>
+ <div th:replace="homepic::copy" ></div>
+<section class="pro-list">
+    <aside class="pro-rightsidebar2">
+        <header>
+            <p></p>
+            <span id="kindsname" style="display: none;"></span>
+            <div class="product-nav"><a th:href="@{/indexl}">首页 </a>&#62;<a th:href="@{/product/productlist}">产品展示</a></div>
+        </header>
+        <main style="margin-top:20px;" th:if="${commodityMap.commodity!=null}">
+            <div class="pro-right-left" style="display: inline-block;float: left;width: 577px;height: 562px;">
+            
+                <div class="pro-details-img tb-booth tb-pic tb-s310" th:if="${commodityMap.pic!=null&&commodityMap.pic+''!=''}" style="float: left;" id="pict1">
+                	<img id="showdetil" th:src="'http://'+${commodityMap.nginx}+'/'+${#strings.replace(pict.url,'.','_577x403.')}" class="jqzoom" th:rel="'http://'+${commodityMap.nginx}+'/'+${pict.url}" th:each="pict,picStart:${commodityMap.pic}" th:if="${picStart.index==0}"/>
+                </div>
+                
+                <div class="pro-details-img tb-booth tb-pic tb-s310" th:if="${commodityMap.pic==null||commodityMap.pic+''==''}" style="float: left;">
+                	<img src="/images/photo01.gif" class="jqzoom" rel="/images/photo01.gif" id="showdetil"/>
+                </div>
+                
+                <div class="pro-detalis-carousel" style="margin-top:30px;float:left;">
+                    <div class="am-slider am-slider-default am-slider-carousel" data-am-flexslider="{itemWidth: 112, itemMargin: 4,move:5,  controlNav: false ,  slideshow: true}">
+                        <input id="nginxip" th:value="'http://'+${commodityMap.nginx}+'/'" type="hidden">
+                        <ul class="am-slides pro-details" th:if="${commodityMap.pic!=null}">
+                            <li th:each="pict:${commodityMap.pic}">
+                            	<img th:src="'http://'+${commodityMap.nginx}+'/'+${#strings.replace(pict.url,'.','_108x68.')}" th:onmouseover="'changepic('+${pict.id}+')'"/>
+                            	<input th:value="${pict.url}" type="hidden" th:id="'realpath'+${pict.id}"/>
+                            </li>
+                        </ul>
+                        <ul class="am-slides pro-details" th:if="${commodityMap.pic==null}">
+                            <li><img th:src="@{/images/photo01.gif}" onmouseover="changepic2()" id="nopic"/></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div  class="picright">
+	            <h3> 名称：[[${commodityMap.commodity.name}]]</h3>
+	            <h3 th:if="${commodityMap.commodity.producer!=null}"> 品牌：[[${commodityMap.commodity.producer.name}]]</h3>
+	            <h3 th:if="${commodityMap.commodity.ispromotion==1}" >市场价格：<span style="text-decoration:line-through;color:#808080;">[[${#numbers.formatDecimal(commodityMap.commodity.price,0,2)}]]</span>&nbsp;&nbsp;¥</h3>
+	            <h3 th:if="${commodityMap.commodity.ispromotion==0}" > 市场价格：<span style="color:#FF0000;">[[${#numbers.formatDecimal(commodityMap.commodity.price,0,2)}]]</span>&nbsp;&nbsp;¥</h3>
+	            <h3 th:if="${commodityMap.commodity.ispromotion==1}"> 优惠价：<span style="color: #FF0000;">[[${#numbers.formatDecimal(commodityMap.commodity.promotionprice,0,2)}]]</span>&nbsp;&nbsp;¥</h3>
+	            <h3 th:if="${commodityMap.commodity.ispromotion==1&&commodityMap.commodity.starttime!=null&&commodityMap.commodity.endtime!=null}"> 
+	            	优惠时间：[[${#dates.format(commodityMap.commodity.starttime, 'yyyy-MM-dd')}]]~[[${#dates.format(commodityMap.commodity.endtime, 'yyyy-MM-dd')}]]
+	            </h3> 
+	            <!-- 促销，热销，新品 -->
+	            <div>
+	            	<img th:src="@{/images/promotion.jpg}" style="height: 250px;" th:if="${commodityMap.commodity.ispromotion==1}"/>
+	            	<img th:src="@{/images/hotsell.jpg}" style="height: 250px;" th:if="${commodityMap.commodity.ispromotion!=1&&commodityMap.commodity.ishot==1}"/>
+	            	<img th:src="@{/images/new.jpg}" style="height: 250px;" th:if="${commodityMap.commodity.ispromotion!=1&&commodityMap.commodity.ishot!=1&&commodityMap.isflesh==1}"/>
+	            </div>
+            </div>
+            <script type="text/javascript">
+            $(document).ready(function(){
+            	$(".jqzoom").imagezoom();
+            	var kindsname="[[${commodityMap.commodity.commoditykinds.name}]]"+"";
+            	$("#kindsname").attr("style","");
+            	$("#kindsname").html(kindsname);
+            	
+            });
+            function changepic(pictid){
+            	var path=$("#realpath"+pictid).val();
+            	var nginxip=$("#nginxip").val(); 
+            	var real=nginxip+path.replace(".","_577x403.");
+            	$("#showdetil").attr("src",real);
+            	$("#showdetil").attr("rel",nginxip+path);
+            }
+            function changepic2(){
+            	var path=$("#nopic").attr("src");
+            	$("#showdetil").attr("src",path);
+            	$("#showdetil").attr("rel","");
+            }
+            </script>
+            <style type="text/css">
+            div.zoomDiv{z-index:999;position:absolute;top:20px;left:0px;width:200px;height:200px;background:#ffffff;border:1px solid #CCCCCC;display:none;text-align:center;overflow:hidden;margin-top:10px;}
+			div.zoomMask{position:absolute;background:url("/images/mask.png") repeat scroll 0 0 transparent;cursor:move;z-index:1;}
+            </style>
+
+             <div class="am-tabs pro-tabs" data-am-tabs>
+                <ul class="am-tabs-nav am-nav am-nav-tabs">
+                    <li class="am-active"><a href="#tab1">详情</a></li>
+                    <li><a href="#tab2">产品参数</a></li>
+                    <!-- <li><a href="#tab3">详细说明3</a></li>	
+                    <li><a href="#tab4">详细说明4</a></li> -->
+                </ul>
+
+                <div class="am-tabs-bd">
+	                <div class="am-tab-panel am-active" id="tab1" th:if="${commodityMap.commodity.intro!=null}">
+						<span th:utext="${commodityMap.commodity.intro}">	
+						</span>
+					</div>
+					 <div class="am-tab-panel am-active" id="tab1" th:if="${commodityMap.commodity.intro==null}" style="height: 200px;text-align: center;">
+						<span style="color:#808080; font-size :70px"><br/>没有查到商品详情信息</span>
+					</div>
+                    <div class="am-tab-panel" id="tab2"  th:if="${commodityMap.specname!=null&&commodityMap.specvalue!=null}">
+                        <ul style="margin-top: 20px;padding:0;" >
+                            <li style="padding: 8px;" th:each="spname,spstart:${commodityMap.specname}">
+                                <span class="pro-tabs-constant">[[${spname}]]：</span>
+                                <span class="pro-tabs-variable">[[${commodityMap.specvalue[spstart.index]}]]</span>
+                            </li>                         
+                        </ul>
+                    </div>
+                     <div class="am-tab-panel" id="tab2"  th:if="${commodityMap.specname==null||commodityMap.specvalue==null}" style="height: 200px;text-align: center;">
+                       <span style="color:#808080; font-size :70px"><br/>没有查到商品参数信息</span>
+                    </div>
+                </div>
+            </div>  
+        </main>
+        <main th:if="${commodityMap.commodity==null}" id="nodetail">
+        	没有找到商品信息
+        </main>
+    </aside>
+</section>
+
+﻿﻿<div th:replace="footer::copy" ></div>
+
+</body>
+
+</html>
